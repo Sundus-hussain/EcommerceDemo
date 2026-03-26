@@ -1,9 +1,9 @@
 
 const form = document.getElementById('orderForm');
-const API_URL = "https://3nyp794ss6.execute-api.us-east-1.amazonaws.com/order"; //  API endpoint
+const API_URL = "https://3nyp794ss6.execute-api.us-east-1.amazonaws.com/order"; // Your API Gateway endpoint
 
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
+form.addEventListener('submit', async (e) => {
+  e.preventDefault(); // prevent default form submission
 
   const data = {
     name: form.name.value,
@@ -13,19 +13,21 @@ form.addEventListener('submit', function(e) {
     notes: form.notes.value
   };
 
-  fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(response => {
-      console.log("Data sent to AWS:", response);
-      alert("Order submitted successfully!");
-      form.reset();
-  })
-  .catch(err => {
-      console.error("Error sending data:", err);
-      alert("Failed to submit order.");
-  });
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const result = await response.json();
+    console.log("Data sent to AWS:", result);
+    alert(result.message); // shows Lambda return message
+    form.reset();
+  } catch (err) {
+    console.error("Error sending data:", err);
+    alert("Failed to submit order. Check console for details.");
+  }
 });
