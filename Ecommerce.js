@@ -1,6 +1,6 @@
 
 const form = document.getElementById('orderForm');
-const API_URL = "https://3nyp794ss6.execute-api.us-east-1.amazonaws.com/order"; // Your API Gateway endpoint
+const API_URL = "https://3nyp794ss6.execute-api.us-east-1.amazonaws.com/order"; // 
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault(); // prevent default form submission
